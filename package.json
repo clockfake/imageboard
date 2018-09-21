@@ -10,10 +10,13 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "koa": "^2.5.3",
+    "koa-body": "^4.0.4",
     "koa-cors": "0.0.16",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "mongoose": "^5.2.14",
+    "nodemon": "^1.18.4",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
@@ -23,6 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon app/entry.js"
   }
 }

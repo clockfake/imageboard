@@ -6,34 +6,36 @@ import { apiLink } from '../constants';
 export default class BoardsList extends Component {
   state = {
     boards: null,
+    error: false,
     name: '',
     code: ''
   }
 
   componentDidMount = async () => {
-    const request = await axios.get(`${apiLink}/getboards`);
+    const request = await axios.get(`${apiLink}/getboards`).catch(err => this.setState({error: 'Не удалось загрузить список досок'}));
     this.setState({boards: request.data.boards});
   }
 
-  handeChange = (e) => {
+  handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   }
 
-  handeSubmit = async (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const response = await axios.post(`${apiLink}/createBoard`, {
       name: this.state.name,
       code: this.state.code
-    });
-    console.log(response);
-    this.setState(({boards}) => ({boards: [...boards, response.data.board]}))
+    }).catch(err => console.log(err));
+    // console.log(response);
+    // this.setState(({boards}) => ({boards: [...boards, response.data.board]}))
   }
 
   render() {
-    if (!boards) return <p>Загрузка...</p>;
+    if (!this.state.boards) return <p>Загрузка...</p>;
+    if (this.state.error) throw new Error(this.state.error);
     return(
       <div>
-        <form onSubmit={this.handeSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <p>Создать доску</p>
           <label>
             Название доски:

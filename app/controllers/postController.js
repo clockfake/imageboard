@@ -5,7 +5,8 @@ export default {
   async viewPosts(ctx) {
     const { threadId } = ctx.params;
     const posts = await Post.find({threadId});
-    ctx.body = { posts };
+    const {name: boardName} = await Board.findOne({code: posts[0].boardCode})
+    ctx.body = { posts, boardName };
   },
 
   async createPost(ctx) {
@@ -16,6 +17,7 @@ export default {
       text,
       threadId: threadId || postId,
       postId,
+      boardCode,
       OP
     });
     await post.save();

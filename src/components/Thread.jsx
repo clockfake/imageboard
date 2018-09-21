@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { apiLink } from '../constants';
 
-export default class ThreadsList extends Component {
+export default class Thread extends Component {
   state = {
-    threads: null,
-    error: false,
+    posts: null,
     author: '',
     text: '',
-    shouldRedirect: false
+    boardName: ''
   }
 
   componentDidMount = async () => {
-    const request = await axios.get(`${apiLink}/boards/${this.props.match.params.boardId}`).catch(err => this.setState({error: 'Доска не найдена'}));
-    this.setState({threads: request.data.threads});
+    const request = await axios.get(`${apiLink}/post/${this.props.match.params.threadId}`).catch(err => console.log(err));
+    this.setState({posts: request.data.posts, boardName: request.data.boardName});
   }
 
   handleChange = (e) => {
@@ -26,22 +25,21 @@ export default class ThreadsList extends Component {
     const response = await axios.post(`${apiLink}/post/createPost`, {
       author: this.state.author || 'Аноним',
       text: this.state.text,
-      threadId: null,
+      threadId: this.props.match.params.threadId,
       boardCode: this.props.match.params.boardId,
-      OP: true
-    }).catch(err => this.setState({error: 'Не удалось создать тред'}));
-    this.setState({shouldRedirect: response.data.post.postId});
+      OP: false
+    }).catch(err => console.log(err));
+    console.log(response);
+    this.setState(({posts}) => ({posts: [...posts, response.data.post]}))
   }
 
   render() {
-    if (this.state.shouldRedirect) return <Redirect to={`/${this.props.match.params.boardId}/${this.state.shouldRedirect}`}/>
-    if (this.state.error) throw new Error(this.state.error);
-    if (!this.state.threads) return <p>Загрузка...</p>;
+    if (!this.state.posts) return <p>Загрузка...</p>;
     return(
       <div>
-        <Link to="/">На главную</Link>
+        <Link to={`/${this.props.match.params.boardId}`}>{this.state.boardName}</Link>
         <form onSubmit={this.handleSubmit}>
-          <p>Создать тред</p>
+          <p>Добавить пост</p>
           <label>
             Ваше имя:
             <input
@@ -64,16 +62,15 @@ export default class ThreadsList extends Component {
             Создать
           </button>
         </form>
-        {this.state.threads.map(thread => (
-          <div key={thread.postId}>
+        {this.state.posts.map(post => (
+          <div key={post.postId}>
             <p>
-            <span>{thread.date}</span>
-            <span>{thread.author}</span>
-            <span>{thread.postId}</span>
-            <Link to={`/${this.props.match.params.boardId}/${thread.threadId}`}>Ответ</Link>
+            <span>{post.date}</span>
+            <span>{post.author}</span>
+            <span>{post.postId}</span>
             </p>
             <p>
-              {thread.text.slice(0, 1000)}
+              {post.text}
             </p>
           </div>
         ))}

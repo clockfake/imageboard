@@ -1,1 +1,1 @@
-export const apiLink = `localhost:3000/api`;
+export const apiLink = `http://localhost:3000/api`;
