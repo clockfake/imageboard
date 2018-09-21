@@ -3,7 +3,7 @@ import Board from '../models/board';
 
 export default {
   async viewPosts(ctx) {
-    const { threadId } = ctx.request.query;
+    const { threadId } = ctx.params;
     const posts = await Post.find({threadId});
     ctx.body = { posts };
   },
@@ -14,7 +14,7 @@ export default {
     const post = new Post({
       author,
       text,
-      threadId || postId,
+      threadId: threadId || postId,
       postId,
       OP
     });

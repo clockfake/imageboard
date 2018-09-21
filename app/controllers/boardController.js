@@ -19,7 +19,7 @@ export default {
   },
 
   async viewThreads(ctx) {
-    const { board } = ctx.request.query;
+    const { board } = ctx.params;
     const threads = await Post.find({boardCode: board, OP: true}).sort({updatedAt: -1});
     ctx.body = { threads };
   }
