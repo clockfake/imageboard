@@ -12,7 +12,8 @@ export default class BoardsList extends Component {
   }
 
   componentDidMount = async () => {
-    const request = await axios.get(`${apiLink}/getboards`).catch(err => this.setState({error: 'Не удалось загрузить список досок'}));
+    const request = await axios.get(`${apiLink}/getboards`)
+      .catch(err => this.setState({error: err.response && err.response.data.message}));
     this.setState({boards: request.data.boards});
   }
 
@@ -25,9 +26,7 @@ export default class BoardsList extends Component {
     const response = await axios.post(`${apiLink}/createBoard`, {
       name: this.state.name,
       code: this.state.code
-    }).catch(err => console.log(err));
-    // console.log(response);
-    // this.setState(({boards}) => ({boards: [...boards, response.data.board]}))
+    }).catch(err => this.setState({error: err.response && err.response.data.message}));
   }
 
   render() {

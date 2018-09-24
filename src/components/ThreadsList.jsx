@@ -13,7 +13,8 @@ export default class ThreadsList extends Component {
   }
 
   componentDidMount = async () => {
-    const request = await axios.get(`${apiLink}/boards/${this.props.match.params.boardId}`).catch(err => this.setState({error: 'Доска не найдена'}));
+    const request = await axios.get(`${apiLink}/boards/${this.props.match.params.boardId}`)
+      .catch(err => this.setState({error: err.response && err.response.data.message}));
     this.setState({threads: request.data.threads});
   }
 
@@ -29,7 +30,7 @@ export default class ThreadsList extends Component {
       threadId: null,
       boardCode: this.props.match.params.boardId,
       OP: true
-    }).catch(err => this.setState({error: 'Не удалось создать тред'}));
+    }).catch(err => this.setState({error: err.response && err.response.data.message}));
     this.setState({shouldRedirect: response.data.post.postId});
   }
 

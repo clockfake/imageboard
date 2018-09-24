@@ -12,6 +12,7 @@ export default {
       threads: []
     });
     await board.save();
+    if (!board) ctx.throw(405, { message: 'Не удалось создать доску' });
     ctx.body = { board };
   },
 

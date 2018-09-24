@@ -8,11 +8,13 @@ export default class Thread extends Component {
     posts: null,
     author: '',
     text: '',
-    boardName: ''
+    boardName: '',
+    error: null
   }
 
   componentDidMount = async () => {
-    const request = await axios.get(`${apiLink}/post/${this.props.match.params.threadId}`).catch(err => console.log(err));
+    const request = await axios.get(`${apiLink}/post/${this.props.match.params.threadId}`)
+      .catch(err => this.setState({ error: err.response && err.response.data.message }));
     this.setState({posts: request.data.posts, boardName: request.data.boardName});
   }
 
@@ -28,13 +30,14 @@ export default class Thread extends Component {
       threadId: this.props.match.params.threadId,
       boardCode: this.props.match.params.boardId,
       OP: false
-    }).catch(err => console.log(err));
+    }).catch(err => this.setState({ error: err.response && err.response.data.message }));
     console.log(response);
     this.setState(({posts}) => ({posts: [...posts, response.data.post]}))
   }
 
   render() {
     if (!this.state.posts) return <p>Загрузка...</p>;
+    if (this.state.error) throw new Error(this.state.error);
     return(
       <div>
         <Link to={`/${this.props.match.params.boardId}`}>{this.state.boardName}</Link>
