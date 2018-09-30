@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { apiLink } from '../constants';
+import Post from './Post.jsx';
 
 export default class Thread extends Component {
   state = {
@@ -65,18 +66,7 @@ export default class Thread extends Component {
             Создать
           </button>
         </form>
-        {this.state.posts.map(post => (
-          <div key={post.postId}>
-            <p>
-            <span>{post.date}</span>
-            <span>{post.author}</span>
-            <span>{post.postId}</span>
-            </p>
-            <p>
-              {post.text}
-            </p>
-          </div>
-        ))}
+        {this.state.posts.map(Post)}
       </div>
     );
   }
