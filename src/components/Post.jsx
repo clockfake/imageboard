@@ -1,13 +1,13 @@
 import React from 'react';
 
 const Post = (post) => (
-  <div key={post.postId} className="post-list__item">
-    <p>
+  <div key={post.postId} className="post__item">
+    <p className="post__item-heading">
     <span>{post.author}</span>
-    <span>{post.date}</span>
-    <span>{post.postId}</span>
+    <span>{(new Date(post.date)).toLocaleString('ru')}</span>
+    <span className="post__id">#{post.postId}</span>
     </p>
-    <p>
+    <p className="post__item-text">
       {post.text}
     </p>
   </div>

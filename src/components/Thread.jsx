@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { apiLink } from '../constants';
 import Post from './Post.jsx';
+import '../css/thread.css';
 
 export default class Thread extends Component {
   state = {
@@ -32,7 +33,6 @@ export default class Thread extends Component {
       boardCode: this.props.match.params.boardId,
       OP: false
     }).catch(err => this.setState({ error: err.response && err.response.data.message }));
-    console.log(response);
     this.setState(({posts}) => ({posts: [...posts, response.data.post]}))
   }
 
@@ -42,7 +42,7 @@ export default class Thread extends Component {
     return(
       <div>
         <Link to={`/${this.props.match.params.boardId}`}>{this.state.boardName}</Link>
-        <form onSubmit={this.handleSubmit}>
+        <form className="post-form" onSubmit={this.handleSubmit}>
           <p>Добавить пост</p>
           <label>
             Ваше имя:
@@ -51,15 +51,15 @@ export default class Thread extends Component {
               name="author"
               value={this.state.author}
               onChange={this.handleChange}
+              className="post-form__author"
             />
           </label>
           <label>
             Текст:
-            <input
-              type="text"
-              name="text"
+            <textarea
               value={this.state.text}
               onChange={this.handleChange}
+              className="post-form__submit"
             />
           </label>
           <button type="submit">

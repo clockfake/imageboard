@@ -39,7 +39,7 @@ body {
   margin-top: 10px;
 }
 
-.post-list__item {
+.post__item {
   margin: 10px;
   padding: 7px;
   min-width: 300px;
@@ -48,19 +48,22 @@ body {
   border-radius: 3px;
 }
 
-.post-list__item-heading {
+.post__item-heading {
   margin: 0;
   padding: 0;
   padding-left: 10px;
-  list-style: none;
 }
 
-.post-list__item-heading li {
+.post__item-heading span {
   display: inline-block;
   margin-right: 5px;
 }
 
-.post-list__item-text {
+.post__item-text {
   display: block;
   padding: 10px;
+}
+
+.post__id {
+  color: #789922;
 }

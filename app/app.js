@@ -30,6 +30,6 @@ app.use(serve(path.resolve(__dirname, '../build/')))
     .use(router.routes())
     .use(router.allowedMethods());
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log('App is listening at port %d', process.env.PORT || 3000);
+app.listen(process.env.PORT || 3200, () => {
+    console.log('Board is listening at port %d', process.env.PORT || 3200);
 });
